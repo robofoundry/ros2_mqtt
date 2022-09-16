@@ -33,7 +33,6 @@ def generate_launch_description():
             package='teleop_twist_joy', executable='teleop_node',
             name='teleop_twist_joy_node', 
             parameters=[config],
-            #remappings={('/cmd_vel', '/joy_cmd_vel')},
             ),
         
     ])

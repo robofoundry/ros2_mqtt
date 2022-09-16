@@ -27,32 +27,31 @@ class RelayRos2Mqtt(Node):
         self.sleep_rate = 0.025
         self.rate = 10
         self.r = self.create_rate(self.rate)
-        broker_address="192.168.1.145" 
-        self.mqttclient = mqtt.Client("ros2mqtt") #create new instance
-        self.mqttclient.connect(broker_address) #connect to broker
+        self.broker_address= self.declare_parameter("~broker_ip_address", '192.168.1.123').value
+        self.MQTT_PUB_TOPIC = self.declare_parameter("~mqtt_pub_topic", 'esp32/cmd_vel').value
+        self.ROS_TWIST_SUB_TOPIC = self.declare_parameter("~twist_sub_topic", '/cmd_vel').value
+        self.mqttclient = mqtt.Client("ros2mqtt") 
+        self.mqttclient.connect(self.broker_address) 
 
         self.get_logger().info('relay_ros2_mqtt:: started...')
+        self.get_logger().info(f'relay_ros2_mqtt:: broker_address = {self.broker_address}')
+        self.get_logger().info(f'relay_ros2_mqtt:: MQTT_PUB_TOPIC = {self.MQTT_PUB_TOPIC}')
+        self.get_logger().info(f'relay_ros2_mqtt:: ROS_TWIST_SUB_TOPIC = {self.ROS_TWIST_SUB_TOPIC}')
 
 
         self.create_subscription(
             Twist,
-            '/cmd_vel',
+            self.ROS_TWIST_SUB_TOPIC,
             self.publish_to_mqtt,
             qos_profile=qos_profile_system_default)
 
 
-        # self._lock = threading.Lock()
-        # self.thread = threading.Thread(target=self.calibrate_manual)
-        # self.thread.start()
-
     def publish_to_mqtt(self, tmsg):
         if tmsg.linear.x != 0 or tmsg.angular.z:
-            TEST_TOPIC = 'esp32/cmd_vel'
             Dictionary ={'x':str(tmsg.linear.x), 'z':str(tmsg.angular.z)}
-            #json_str = ('{"x":"{0}", "z":"{1}"}'.format(str(tmsg.linear.x), str(tmsg.angular.z)))
             self.get_logger().info('dict:: {0}'.format(json.dumps(Dictionary).encode()))
             
-            self.mqttclient.publish(TEST_TOPIC,json.dumps(Dictionary).encode(),qos=0, retain=False)#publish
+            self.mqttclient.publish(self.MQTT_PUB_TOPIC,json.dumps(Dictionary).encode(),qos=0, retain=False)
 
 def main(args=None):
     
