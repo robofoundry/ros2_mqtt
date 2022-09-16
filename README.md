@@ -11,6 +11,9 @@
 ### build the project from root folder of workspace
 colcon build
 
+### launch the ros2mqtt node along with teleop twist nodes
+ros2 launch ros2_mqtt ros2_mqtt.launch.py
+
 ### show twist messages
 ros2 topic echo /cmd_vel
 
