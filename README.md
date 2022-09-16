@@ -4,9 +4,9 @@
 ### on computer
 
 ### update configurations in following places
-#### 1 in ros2_mqtt/config/param.yaml file - replace 192.168.1.123 with ip address of where you are running mqtt broker [your computer]
-#### 2 in esp32/boot.py - update SSID and PWD for your wifi
-#### 3 in esp32/main.py - replace IP_ADDR_OF_MQTT_BROKER with your mqtt broker ip address [same as ####1]
+1. in ros2_mqtt/config/param.yaml file - replace 192.168.1.123 with ip address of where you are running mqtt broker [your computer]
+2. in esp32/boot.py - update SSID and PWD for your wifi
+3. in esp32/main.py - replace IP_ADDR_OF_MQTT_BROKER with your mqtt broker ip address [same as ####1]
 
 ### build the project from root folder of workspace
 colcon build
