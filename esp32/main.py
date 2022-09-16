@@ -1,6 +1,5 @@
 # main.py
 
-### --- same as before ---
 from umqtt.simple import MQTTClient
 from machine import Pin
 import json
